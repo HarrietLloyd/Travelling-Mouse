@@ -20,10 +20,14 @@ BasicGame.Game = function (game) {
     this.physics;   // the physics manager
     this.rnd;       // the repeatable random number generator
 
+    var o = new Phaser.State();
+
     // Private Variables:
-    var tilesize = 56.88;
-    var bottomLeft = {x : 23 + tilesize/2, y : 1057 - tilesize/2};
-    var gameOrigin = {x : 23 + tilesize, y : 1057 - tilesize};
+    var ERRORTOLERANCE = 1;
+    var ANGLETOLERANCE = 0.02;
+    var TILESIZE = 56.88;
+    var bottomLeft = {x : 23 + TILESIZE/2, y : 1057 - TILESIZE/2};
+    var gameOrigin = {x : 23 + TILESIZE, y : 1057 - TILESIZE};
     var numMouseRows = 16;
     var numMouseCols = 32;
     var mouseOrigin = {x: 0, y:0};
@@ -38,15 +42,25 @@ BasicGame.Game = function (game) {
 
     // Private Methods
     var toGameCoords = function(Xpos, Ypos) {
-        var x = gameOrigin.x + Xpos*tilesize;
-        var y = gameOrigin.y - Ypos*tilesize;
+        var x = gameOrigin.x + Xpos*TILESIZE;
+        var y = gameOrigin.y - Ypos*TILESIZE;
         return {x, y};
     };
     var toMouseCoords = function(Xpixel, Ypixel) {
-        var x = (Xpixel - gameOrigin.x)/tilesize;
-        var y = (Ypixel + gameOrigin.y)/tilesize;
+        var x = (Xpixel - gameOrigin.x)/TILESIZE;
+        var y = (gameOrigin.y - Ypixel)/TILESIZE;
         return {x, y};
     };
+    var toGameAngle = function(angle) {
+        //XXX assert 0 <= angle <= 360
+        var theta = 2*Math.PI - angle*Math.PI/180;
+        return theta;
+    };
+    var toMouseAngle = function(theta){
+        //XXX assert 0 <= angle <= 2pi
+        var angle = 360 - theta*180/Math.PI;
+        return angle;
+    }
     var updateClock = function(elapsedSeconds) {
         var clockTime = Math.floor(elapsedSeconds);
         var minutes = Math.floor(clockTime / 60);
@@ -64,10 +78,103 @@ BasicGame.Game = function (game) {
             BasicGame.clockString = BasicGame.clockString + ' : ' + milliseconds;
         }
         clock.setText(BasicGame.clockString);
+        return;
     };
 
-    var o = new Phaser.State();
+    var eatCheese = function(){
+        cheeseSprites.forEach(function(cheeseSprite) {
+            if (cheeseSprite !== null) {
+                var dx = abs(mouseSprite.x - cheeseSprite.x);
+                var dy = abs(mouseSprite.y - cheeseSprite.y);
+                if ((dx < ERRORTOLERANCE) && (dy < ERRORTOLERANCE)) {
+                    // Remove cheeseSprite.
+                    cheeseSprite.destroy();
+                }
+            }
+        });
+        return;
+    };
 
+    var winCheck = function() {
+
+    }
+
+    // Set up the direction to turn in.
+    var prepareToTurn = function() {
+        var targetTheta = instruction.value;
+        if ((0 <= targetTheta)&&(targetTheta < Math.PI)) {
+            // Split the circle in half and determine which half the mouse is in.
+            var backTheta = targetTheta + Math.PI;
+            if ((targetTheta <= mouseSprite.rotation)&&(mouseSprite.rotation <= backTheta)) {
+                instruction.turndelta = (-1);   // go anticlockwise
+            } else {
+                instruction.turndelta = 1;      // go clockwise
+            }
+        } else if ((Math.PI <= targetTheta)&&(targetTheta <= 2*Math.PI)) {
+            // Split the circle in half and determine which half the mouse is in.
+            var backTheta = targetTheta - Math.PI;
+            if ((mouseSprite.rotation <= targetTheta)&&(backTheta <= mouseSprite.rotation)) {
+                instruction.turndelta = 1;      // go clockwise
+            } else {
+                instruction.turndelta = (-1);   // go anticlockwise
+            }
+        }else{
+            console.log("Something went wrong. targetTheta is:")
+            console.log(targetTheta);
+            console.log("...but was expected to be between 0 and 6.28");
+        }
+        instruction.started = true;
+        return;
+    }
+
+    // Turn the mouse towards the instructed target angle
+    var turn = function() {
+        if (abs(mouseSprite.rotation - instruction.value) < ANGLETOLERANCE) {
+            // ...then we're close enough to the target angle, and can finish turning.
+            mouseSprite.rotation = instruction.value;
+            instruction.done = true;
+        } else {
+            // Keep turning the mouse.
+            mouseSprite.rotation = mouseSprite.rotation + instruction.turndelta*ANGLETOLERANCE;
+            mouseSprite.rotation = mod(mouseSprite.rotation, 2*Math.PI);
+        }
+        return;
+    }
+
+    // Set up the end point the mouse is aiming for.
+    var prepareToMove = function() {
+        // Calculate the end point.
+        var distance = instruction.value*TILESIZE;
+        instruction.endPoint.x = mouseSprite.x + distance*Math.cos(mouseSprite.rotation);
+        instruction.endPoint.y = mouseSprite.y + distance*Math.sin(mouseSprite.rotation);
+
+        instruction.started = true;
+
+        console.log("Mouse is moving towards this end point:");
+        var mouseCoord = toMouseCoords(instruction.endPoint.x, instruction.endPoint.y);
+        console.log("x: " + (+(mouseCoord.x).toFixed(12)) );
+        console.log("y: " + (+(mouseCoord.y).toFixed(12)) );
+        return;
+    }
+
+    // Move the mouse closer to the end point.
+    var move = function() {
+        var Xdist = abs(mouseSprite.x - instruction.endPoint.x);
+        var Ydist = abs(mouseSprite.y - instruction.endPoint.y);
+        if ((Xdist < ERRORTOLERANCE) && (Ydist < ERRORTOLERANCE)) {
+            // ...then we're close enough to the target position. Teleport there.
+            mouseSprite.x = instruction.endPoint.x;
+            mouseSprite.y = instruction.endPoint.y;
+            instruction.done = true;
+        } else {
+            // Keep moving the mouse.
+            mouseSprite.x = mouseSprite.x + Math.cos(mouseSprite.rotation);
+            mouseSprite.y = mouseSprite.y + Math.sin(mouseSprite.rotation);
+        }
+        return;
+    }
+
+    // Public Methods
     o.init = function(lvl) {
         level = lvl;
     };
@@ -112,27 +219,28 @@ BasicGame.Game = function (game) {
             var colText = this.game.add.text(0, 0, "" + i, {align:'center', font:'Arial Black', fontSize:30, stroke:'#000000', strokeThickness: 6, fill: '#1B88FF'});
             colText.anchor.set(0.5);
             colText.alpha = 0.5;
-            colText.x = gameOrigin.x + i*tilesize;
-            colText.y = gameOrigin.y + tilesize/2;
+            colText.x = gameOrigin.x + i*TILESIZE;
+            colText.y = gameOrigin.y + TILESIZE/2;
         }
         for (var i = 0; i < numMouseRows; i++) {
             var rowText = this.game.add.text(0, 0, "" + i, {align:'center', font:'Arial Black', fontSize:30, stroke:'#000000', strokeThickness: 6, fill: '#1B88FF'});
             rowText.anchor.set(0.5);
             rowText.alpha = 0.5;
-            rowText.x = gameOrigin.x - tilesize/2;
-            rowText.y = gameOrigin.y - i*tilesize + 1;
+            rowText.x = gameOrigin.x - TILESIZE/2;
+            rowText.y = gameOrigin.y - i*TILESIZE + 1;
         }
         var axes = this.game.add.graphics(gameOrigin.x,gameOrigin.y);
         axes.lineStyle(5, 0x1B88FF, 1);
-        axes.lineTo(numMouseCols*tilesize, 0);
+        axes.lineTo(numMouseCols*TILESIZE, 0);
         axes.moveTo(0,0);
-        axes.lineTo(0, -numMouseRows*tilesize);
+        axes.lineTo(0, -numMouseRows*TILESIZE);
 
         // Add the mouse.
         mouseSprite = this.add.sprite(this.world.centerX, this.world.centerY, 'mouse' + level);
-        mouseSprite.anchor.setTo(0.5,0.4);
-        mouseSprite.x = toGameCoords(mouseOrigin.x, mouseOrigin.y).x;
-        mouseSprite.y = toGameCoords(mouseOrigin.x, mouseOrigin.y).y;
+        mouseSprite.anchor.setTo(0.6,0.5);
+        var mouseSpriteCoord = toGameCoords(mouseOrigin.x, mouseOrigin.y);
+        mouseSprite.x = mouseSpriteCoord.x;
+        mouseSprite.y = mouseSpriteCoord.y;
         var mousePointSprite = this.add.sprite(mouseSprite.x, mouseSprite.y, 'point2');
         mousePointSprite.anchor.setTo(0.5,0.5);
 
@@ -149,21 +257,26 @@ BasicGame.Game = function (game) {
             pointText.y = spriteCoord.y-5;
         }
 
+        // Add the back button.
         this.backButton = this.add.button(0, 0, 'backButton', this.quitGame, this, 1, 0, 2);
 
+        //XXX check that my-code exists somewhere?
+
+        // Run the instruction code.
         myCode();
 
+        // Make the instructions useable
         instructions = mouse.getInstructions();
         if (instructions.length === 0) {
-            console.log("Error: Your code isn't giving the mouse any instructions!");
+            console.log("ERROR: Your code isn't giving the mouse any instructions!");
             this.state.start('MainMenu');
-            instruction = {do: 'turn', value: 0, done:true};
+            instruction = {do: 'turn', value: 0, done: true}; // A dummy instruction for the update method
         } else {
             instructions.forEach(function(instr) {
                 if (instr.do === 'turn') {
-                    if (instr.value >= 180) {
-                        instr.value = instr.value - 360;
-                    }
+                    instr.value = toGameAngle(instr.value);
+                    instr.started = false;
+                    instr.turndelta = 1;
                 } else if (instr.do === 'move') {
                     instr.started = false;
                     instr.endPoint = {x: 0, y: 0};
@@ -194,21 +307,12 @@ BasicGame.Game = function (game) {
     o.update = function() {
         updateClock(this.game.time.totalElapsedSeconds());
         if (instruction.done === true) {
-            // Check if the mouse is on the cheese.
-            cheeseSprites.forEach(function(cheeseSprite) {
-                if (cheeseSprite !== null) {
-                    var dx = abs(mouseSprite.x - cheeseSprite.x);
-                    var dy = abs(mouseSprite.y - cheeseSprite.y);
-                    if ((dx < 1) && (dy < 1)) {
-                        // Remove cheeseSprite.
-                        cheeseSprite.destroy();
-                    }
-                }
-            });
+            eatCheese();
             if (instructions.length > 0) {
+                // Cue the next instruction.
                 instruction = instructions.shift();
             } else {
-                // All instructions are completed. Check for win or loss.
+                // ...all instructions are completed. Check for win or loss.
                 console.log("All instructions completed.");
                 var allCheesesEaten = true;
                 cheeseSprites.forEach(function(cheeseSprite) {
@@ -224,34 +328,16 @@ BasicGame.Game = function (game) {
             }
         } else {
             if (instruction.do === 'turn') {
-                // Turn the mouse.
-                if (abs(mouseSprite.angle - instruction.value) < 1) {
-                    //...then we're close enough to the target angle, and can finish turning.
-                    mouseSprite.angle = instruction.value;
-                    instruction.done = true;
+                if (instruction.started === false) {
+                    prepareToTurn();
                 } else {
-                    // Keep turning the mouse.
-                    mouseSprite.angle = mouseSprite.angle + 1;
+                    turn();
                 }
             } else if (instruction.do === 'move') {
                 if (instruction.started === false) {
-                    // Calculate the end point.
-                    var distance = instruction.value*tilesize;
-                    instruction.endPoint.x = mouseSprite.x + distance*cos(90 - mouseSprite.angle);
-                    instruction.endPoint.y = mouseSprite.y - distance*sin(90 - mouseSprite.angle);
-                    instruction.started = true;
+                    prepareToMove();
                 } else {
-                    // Move the mouse closer to the end point.
-                    if ((abs(mouseSprite.x - instruction.endPoint.x) < 1) && (abs(mouseSprite.y - instruction.endPoint.y) < 1)) {
-                        //... then we're close enough to the target position.
-                        mouseSprite.x = instruction.endPoint.x;
-                        mouseSprite.y = instruction.endPoint.y;
-                        instruction.done = true;
-                    } else {
-                        // Keep moving the mouse.
-                        mouseSprite.x = mouseSprite.x + cos(90 - mouseSprite.angle);
-                        mouseSprite.y = mouseSprite.y - sin(90 - mouseSprite.angle);
-                    }
+                    move();
                 }
             } else {
                 // Shouldn't get here

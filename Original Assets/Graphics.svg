@@ -516,9 +516,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="1149.3808"
-     inkscape:cy="983.986"
+     inkscape:zoom="0.7071068"
+     inkscape:cx="712.66306"
+     inkscape:cy="917.30848"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -555,7 +555,11 @@
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       id="g6198">
+       id="g6198"
+       transform="matrix(0,1,-1,0,789.72454,-635.03942)"
+       inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\Player4.png"
+       inkscape:export-xdpi="48.279892"
+       inkscape:export-ydpi="48.279892">
       <g
          id="g8225"
          transform="matrix(0,-1,1,0,639.20736,81.74559)">
@@ -661,7 +665,7 @@
          style="opacity:1;fill:#e6a4a4;fill-opacity:1;stroke:none;stroke-width:3.70000005;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <g
-       transform="matrix(0,-1,1,0,-153.55896,288.61351)"
+       transform="translate(84.344712,-371.83206)"
        id="g6282"
        inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\Player2.png"
        inkscape:export-xdpi="48.279892"
@@ -857,7 +861,11 @@
          sodipodi:nodetypes="sssss" />
     </g>
     <g
-       id="g5803">
+       id="g5803"
+       transform="matrix(0,1,-1,0,581.84645,-427.16133)"
+       inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\Player3.png"
+       inkscape:export-xdpi="48.279892"
+       inkscape:export-ydpi="48.279892">
       <g
          inkscape:export-ydpi="88.586967"
          inkscape:export-xdpi="88.586967"
@@ -1901,7 +1909,7 @@
     </g>
     <g
        id="g5836"
-       transform="matrix(1.0100125,0,0,1,28.82033,-385.51367)"
+       transform="matrix(1.0100125,0,0,1,74.82033,-385.51367)"
        inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\Cheese.png"
        inkscape:export-xdpi="35.598339"
        inkscape:export-ydpi="35.598339">
@@ -2146,7 +2154,7 @@
          id="flowPara6292">17x33</flowPara><flowPara
          id="flowPara4674">56.88px</flowPara></flowRoot>    <rect
        y="28.082687"
-       x="1217.9375"
+       x="1233.9375"
        height="56.880001"
        width="56.880001"
        id="rect9719"
@@ -2158,14 +2166,14 @@
        sodipodi:nodetypes="ccsc"
        inkscape:connector-curvature="0"
        id="path9731"
-       d="m 1223.9625,84.664419 44.4767,0.670891 c 0,0 -0.6244,-44.760646 -20.9796,-44.951597 -23.8098,-0.22335 -23.4971,44.280706 -23.4971,44.280706 z"
+       d="m 1239.9625,84.664419 44.4767,0.670891 c 0,0 -0.6244,-44.760646 -20.9796,-44.951597 -23.8098,-0.22335 -23.4971,44.280706 -23.4971,44.280706 z"
        style="fill:#808080;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\hole.png"
        inkscape:export-xdpi="89.997208"
        inkscape:export-ydpi="89.997208" />
     <path
        style="fill:#373d43;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 1230.9625,84.728444 37.4767,0.606866 c 0,0 -0.5261,-40.487719 -17.6777,-40.660441 -20.0625,-0.202031 -19.799,40.053575 -19.799,40.053575 z"
+       d="m 1246.9625,84.728444 37.4767,0.606866 c 0,0 -0.5261,-40.487719 -17.6777,-40.660441 -20.0625,-0.202031 -19.799,40.053575 -19.799,40.053575 z"
        id="path9729"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccsc"
@@ -2187,7 +2195,8 @@
        id="g5418"
        inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\Player1.png"
        inkscape:export-xdpi="48.279892"
-       inkscape:export-ydpi="48.279892">
+       inkscape:export-ydpi="48.279892"
+       transform="matrix(0,1,-1,0,166.0903,-11.40518)">
       <g
          transform="matrix(0,-1,1,0,15.57312,81.745591)"
          id="g7770">
@@ -6882,7 +6891,7 @@
        inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\footprints.png"
        inkscape:export-xdpi="48.253551"
        inkscape:export-ydpi="48.253551"
-       transform="translate(182,0)">
+       transform="translate(198,0)">
       <path
          sodipodi:nodetypes="cccccccc"
          inkscape:connector-curvature="0"
@@ -6904,7 +6913,11 @@
          cy="59.857407" />
     </g>
     <g
-       id="g5633">
+       id="g5633"
+       transform="matrix(0,1,-1,0,1009.7245,-855.03942)"
+       inkscape:export-filename="C:\wamp\www\Travelling Salesmouse\images\Player5.png"
+       inkscape:export-xdpi="48.279892"
+       inkscape:export-ydpi="48.279892">
       <g
          transform="matrix(0,-1,1,0,859.20736,81.74559)"
          id="g5240">

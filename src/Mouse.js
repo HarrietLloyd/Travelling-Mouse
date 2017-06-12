@@ -30,6 +30,9 @@ var pow = function(base, exponent) {
 var abs = function(x){
     return Math.abs(x);
 }
+var mod = function(x, m){
+    return ((x % m) + m) % m
+}
 var getRandomInt = function(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -40,7 +43,7 @@ var makeMouse = function(Xposition, Yposition, heading) {
     //XXX
     var Xpos = Xposition;
     var Ypos = Yposition;
-    var heading = heading; // between 0 and 360
+    var heading = heading; // between 0 and 360 degrees
     var instructions = [];
 
     var getX = function() {
@@ -55,34 +58,38 @@ var makeMouse = function(Xposition, Yposition, heading) {
     var getInstructions = function() {
         return instructions;
     };
-    var setDirection = function(dir) {
 
-        heading = dir;
-        instructions.push({do:'turn', value:dir, done:false});
-    };
-    //XXX check dist/dir is a number
-    // 0 < dir < 360
-    // dir > 0
-    var setDistance = function(dist) {
-        //XXX
-        instructions.push({do:'move', value:dist, done:false});
-        if (heading <= 90) {
-            var angle = heading;
-            Xpos = Xpos + dist*cos(angle);
-            Ypos = Ypos + dist*sin(angle);
-        } else if (heading <= 180) {
-            var angle = heading - 90;
-            Xpos = Xpos + dist*cos(angle);
-            Ypos = Ypos - dist*sin(angle);
-        } else if (heading <= 270) {
-            var angle = heading - 180;
-            Xpos = Xpos - dist*cos(angle);
-            Ypos = Ypos - dist*sin(angle);
-        } else {
-            var angle = heading - 270;
-            Xpos = Xpos - dist*cos(angle);
-            Ypos = Ypos + dist*sin(angle);
+    // Set 0 <= heading <= 360 then add a turn instruction
+    var setDirection = function(dir) {
+        // Check dir is a number.
+        if (typeof dir !== 'number') {
+            console.log("ERROR: The direction you told the mouse to face wasn't a number.");
+            console.log("It was a '" + (typeof dir) + "' and looks like this:");
+            console.log(dir);
+            dir = 0;
         }
+        // Set 0 <= heading <= 360.
+        heading = mod(dir, 360);
+        // Add the turn instruction.
+        instructions.push({do:'turn', value:heading, done:false});
+    };
+    var setDistance = function(dist) {
+        //XXX make sure negative directions work.
+
+        // Check dist is a number.
+        if (typeof dist !== 'number') {
+            console.log("ERROR: The distance you told the mouse to move wasn't a number.");
+            console.log("It was a '" + (typeof dist) + "' and looks like this:");
+            console.log(dist);
+            dist = 0;
+        }
+        
+        // Add the move instruction.
+        instructions.push({do:'move', value:dist, done:false});
+
+        // Update the Mouse oject's position.
+        Xpos = Xpos + dist*cos(heading);
+        Ypos = Ypos + dist*sin(heading);
     };
     var getInstructions = function() {
         return instructions;

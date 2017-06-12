@@ -5,17 +5,10 @@
 |
 \*************************************************************************/
 function myCode() {
-// starting:
-    // mouse.faceDirection(90);
-    // mouse.moveDistance(4);
-    // mouse.faceDirection(358);
 //Level 1
-mouse.faceDirection(358);
-
-    // var angle = arctan(4/3);
+    // var angle = arctan(3/4);
     // mouse.faceDirection(angle);
     // mouse.moveDistance(5);
-
 //Level 2
 
     var a = 14 - 5;
@@ -26,9 +19,9 @@ mouse.faceDirection(358);
     var adjacent = 14 - 5;
     var opposite = 12 - 10;
     var angle = arctan(opposite/adjacent);
-    mouse.faceDirection(angle+90);
+    mouse.faceDirection(-angle);
     mouse.moveDistance(hypotenuse);
-
+//    mouse.eatCheese();
 
 }
 /*
