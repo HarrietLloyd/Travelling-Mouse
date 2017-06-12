@@ -1,4 +1,3 @@
-
 BasicGame.Preloader = function (game) {
     var o = new Phaser.State();
 

@@ -1,5 +1,3 @@
-
-
 //XXX destroy stuff when leaving state.
 
 BasicGame.Game = function (game) {
