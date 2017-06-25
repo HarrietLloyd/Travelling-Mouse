@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Code Editor</title>
+<style type="text/css" media="screen">
+    #editor {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    #run {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 50px;
+    }
+</style>
+</head>
+<body>
+
+
+<div id="editor">
+console.log("Hello world");
+
+</div>
+
+<button id="run" onClick="clicked()">Run</button>
+
+<script src="ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+
+    var clicked = function(){
+        eval(editor.getValue());
+    };
+</script>
+</body>
+</html>

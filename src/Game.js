@@ -1,4 +1,4 @@
-//XXX destroy stuff when leaving state.
+//XXX destroy stuff when leaving state?
 
 BasicGame.Game = function (game) {
 
@@ -150,7 +150,7 @@ BasicGame.Game = function (game) {
 
         instruction.started = true;
 
-        console.log("Mouse is moving towards this end point:");
+        console.log("Mouse is moving towards this point:");
         var mouseCoord = toMouseCoords(instruction.endPoint.x, instruction.endPoint.y);
         console.log("x: " + (+(mouseCoord.x).toFixed(12)) );
         console.log("y: " + (+(mouseCoord.y).toFixed(12)) );
@@ -196,6 +196,7 @@ BasicGame.Game = function (game) {
             mouseOrigin.y = getRandomInt(0,17);
             mouseOrigin.x = getRandomInt(0,33);
         }
+        // Make-your-own level (upload file)
 
         mouse = makeMouse(mouseOrigin.x, mouseOrigin.y, 0);
 
@@ -263,7 +264,8 @@ BasicGame.Game = function (game) {
         //XXX check that my-code exists somewhere?
 
         // Run the instruction code.
-        myCode();
+//        myCode();
+        eval(BasicGame.editor.getValue());
 
         // Make the instructions useable
         instructions = mouse.getInstructions();

@@ -3,6 +3,7 @@ BasicGame = {
     // Global variables that persist through State changes.
     clockString: "",
     milliseconds: 0,
+    editor: null,
 
     /* If the music in your game needs to play through-out a few State swaps, then you could reference it here */
     music: null,
@@ -15,20 +16,38 @@ BasicGame = {
 BasicGame.Boot = function (game) {
     var o = new Phaser.State();
 
+    o.gameResized = function(scale, parentBounds) {
+        var hTrim = 0;
+        var vTrim = 1;
+        var newScale = 1;
+        if (0.5*window.innerWidth / window.innerHeight > 16/9) {
+            newScale = window.innerHeight / game.height;
+        } else {
+            newScale = 0.5*window.innerWidth / game.width;
+        }
+        scale.setUserScale(newScale, newScale, hTrim, vTrim);
+    };
+
     o.init = function() {
         this.input.maxPointers = 1;
         this.stage.disableVisibilityChange = true;
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        this.scale.setMinMax(480, 270, 1920, 1080);
+        this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
 
+        this.scale.setResizeCallback(o.gameResized, this);
+
         if (!this.game.device.desktop) {
             this.scale.forceOrientation(true, false);
-            this.scale.setResizeCallback(this.gameResized, this);
             this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
         }
+        
+        // Set up the editor
+        BasicGame.editor = ace.edit("editor");
+        BasicGame.editor.setTheme("ace/theme/monokai");
+        BasicGame.editor.getSession().setMode("ace/mode/javascript");
+
     };
 
     o.preload = function() {
@@ -37,14 +56,6 @@ BasicGame.Boot = function (game) {
 
     o.create = function() {
         this.state.start('Preloader');
-    };
-
-    o.gameResized = function(width, height) {
-
-        //  This could be handy if you need to do any extra processing if the game resizes.
-        //  A resize could happen if for example swapping orientation on a device or resizing the browser window.
-        //  Note that this callback is only really useful if you use a ScaleMode of RESIZE and place it inside your main game state.
-
     };
 
     o.enterIncorrectOrientation = function() {

@@ -10,20 +10,20 @@ function myCode() {
     // mouse.faceDirection(angle);
     // mouse.moveDistance(5);
 //Level 2
-
-    var a = 14 - 5;
-    var b = 12 - 10;
+    var a = 14 - mouse.X();
+    var b = 10 - mouse.Y();
     var hypotenuse = sqrt(a*a + b*b);
 
 
     var adjacent = 14 - 5;
-    var opposite = 12 - 10;
+    var opposite = 10 - mouse.Y();
     var angle = arctan(opposite/adjacent);
-    mouse.faceDirection(-angle);
+    mouse.faceDirection(angle);
     mouse.moveDistance(hypotenuse);
+}
 //    mouse.eatCheese();
 
-}
+//}
 /*
 //Level 3
     var a = cheese.X() - mouse.X();

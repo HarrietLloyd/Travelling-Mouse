@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
   <head>
     <title>Travelling Mouse</title>
     <meta charset="utf-8">
@@ -44,11 +44,29 @@
     <script src="src/Game.js"></script>
     <script src="my_code.js"></script>
 
+    <script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
+
+
   </head>
   <body>
 
     <div id="game"></div>
     <div id="orientation"></div>
+
+    <div id="editor">
+console.log("Hello world");
+var a = 14 - mouse.X();
+var b = 10 - mouse.Y();
+var hypotenuse = sqrt(a*a + b*b);
+
+
+var adjacent = 14 - 5;
+var opposite = 10 - mouse.Y();
+var angle = arctan(opposite/adjacent);
+mouse.faceDirection(angle);
+mouse.moveDistance(hypotenuse);
+
+    </div>
 
     <script type="text/javascript">
 
@@ -75,3 +93,8 @@
 
   </body>
 </html>
+
+<style type="text/css" media="screen">
+</style>
+</head>
+<body>
