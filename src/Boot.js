@@ -20,7 +20,7 @@ BasicGame.Boot = function (game) {
         var hTrim = 0;
         var vTrim = 1;
         var newScale = 1;
-        if (0.5*window.innerWidth / window.innerHeight > 16/9) {
+        if (0.5*window.innerWidth / window.innerHeight > 8/9) {
             newScale = window.innerHeight / game.height;
         } else {
             newScale = 0.5*window.innerWidth / game.width;
@@ -42,7 +42,7 @@ BasicGame.Boot = function (game) {
             this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
             this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
         }
-        
+
         // Set up the editor
         BasicGame.editor = ace.edit("editor");
         BasicGame.editor.setTheme("ace/theme/monokai");

@@ -15,7 +15,12 @@ BasicGame.Preloader = function (game) {
         this.load.setPreloadSprite(this.preloadBar);
 
         // Assets needed in the game:
-        this.load.image('instructionBackground', 'images/instruction_background.png');
+        this.load.image('instructions_level_1', 'images/instructions_level_1.png');
+        this.load.image('instructions_level_2', 'images/instructions_level_2.png');
+        this.load.image('instructions_level_3', 'images/instructions_level_3.png');
+        this.load.image('instructions_level_4', 'images/instructions_level_4.png');
+        this.load.image('instructions_level_5', 'images/instructions_level_5.png');
+        this.load.image('instructions_level_6', 'images/instructions_level_6.png');
         this.load.image('mouse1', 'images/player1.png');
         this.load.image('mouse2', 'images/player2.png');
         this.load.image('mouse3', 'images/player3.png');
@@ -27,7 +32,7 @@ BasicGame.Preloader = function (game) {
         this.load.image('point', 'images/point.png');
         this.load.image('point2', 'images/point2.png');
         this.load.image('gameBackground', 'images/background.png');
-        this.load.spritesheet('playButton', 'images/button.png', 250, 65);
+        this.load.spritesheet('runButton', 'images/button_run.png', 400, 104);
         this.load.spritesheet('button1', 'images/button_level_1.png', 250, 284);
         this.load.spritesheet('button2', 'images/button_level_2.png', 250, 284);
         this.load.spritesheet('button3', 'images/button_level_3.png', 250, 284);

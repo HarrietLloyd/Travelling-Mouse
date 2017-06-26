@@ -2,7 +2,7 @@
 BasicGame.InstructionScreen = function(game) {
 
     this.music = null;
-    this.playButton = null;
+    this.runButton = null;
 
     var o = new Phaser.State();
     var level;
@@ -12,9 +12,9 @@ BasicGame.InstructionScreen = function(game) {
     }
 
     o.create = function() {
-        this.add.sprite(0, 0, 'instructionBackground');
+        this.add.sprite(0, 0, 'instructions_level_' + level);
 
-        this.playButton = this.add.button(this.world.centerX - 250/2, this.world.height - 70, 'playButton', o.startGame, this, 1, 0, 2);
+        this.runButton = this.add.button(this.world.centerX - 400/2, this.world.height - 110, 'runButton', o.startGame, this, 1, 0, 2);
         this.backButton = this.add.button(0, 0, 'backButton', this.goBack, this, 1, 0, 2);
 
     };

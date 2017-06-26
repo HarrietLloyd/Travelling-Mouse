@@ -39,3 +39,9 @@ body {
   right: 0;
   width: 50px;
 }
+.ace_gutter-layer {
+    width: 20px !important;
+}
+.ace_gutter-cell {
+    padding-left: 3px !important;
+}

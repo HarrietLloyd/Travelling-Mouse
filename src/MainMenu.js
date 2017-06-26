@@ -19,11 +19,18 @@ BasicGame.MainMenu = function (game) {
         this.Button3.anchor.setTo(0.5,0.5);
         this.Button4.anchor.setTo(0.5,0.5);
         this.Button5.anchor.setTo(0.5,0.5);
-        this.Button1.x = this.world.width*1/6;
-        this.Button2.x = this.world.width*2/6;
-        this.Button3.x = this.world.width*3/6;
-        this.Button4.x = this.world.width*4/6;
-        this.Button5.x = this.world.width*5/6;
+        this.Button1.x = this.world.width*20/100;
+        this.Button2.x = this.world.width*50/100;
+        this.Button3.x = this.world.width*80/100;
+        this.Button4.x = this.world.width*20/100;
+        this.Button5.x = this.world.width*50/100;
+
+        this.Button1.y = this.world.height*40/100;
+        this.Button2.y = this.world.height*40/100;
+        this.Button3.y = this.world.height*40/100;
+        this.Button4.y = this.world.height*75/100;
+        this.Button5.y = this.world.height*75/100;
+
     };
 
     o.update = function() {
