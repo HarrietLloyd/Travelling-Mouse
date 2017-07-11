@@ -47,7 +47,7 @@ BasicGame.Boot = function (game) {
         BasicGame.editor = ace.edit("editor");
         BasicGame.editor.setTheme("ace/theme/monokai");
         BasicGame.editor.getSession().setMode("ace/mode/javascript");
-
+        BasicGame.editor.$blockScrolling = Infinity;
     };
 
     o.preload = function() {

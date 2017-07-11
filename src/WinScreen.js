@@ -14,7 +14,7 @@ BasicGame.WinScreen = function(game) {
         congratsText.align = 'center';
         // Font style
         congratsText.font = 'Arial Black';
-        congratsText.fontSize = 100;
+        congratsText.fontSize = 80;
         congratsText.fontWeight = 'bold';
         // Stroke color and thickness, and text fill color
         congratsText.stroke = '#000000';
@@ -40,7 +40,7 @@ BasicGame.WinScreen = function(game) {
         timeText.align = 'center';
         // Font style
         timeText.font = 'Arial Black';
-        timeText.fontSize = 200;
+        timeText.fontSize = 150;
         timeText.fontWeight = 'bold';
         // Stroke color and thickness, and text fill color
         timeText.stroke = '#000000';

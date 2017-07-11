@@ -26,13 +26,11 @@ BasicGame.Game = function (game) {
     var ERRORTOLERANCE = 1;
     var ANGLETOLERANCE = 0.02;
     var TILESIZE = 56.88;
-    var bottomLeft = {x : 23 + TILESIZE/2, y : 1057 - TILESIZE/2};
-    var gameOrigin = {x : 23 + TILESIZE, y : 1057 - TILESIZE};
-    var numMouseRows = 16;
-    var numMouseCols = 32;
+    var gameOrigin = {x : 25, y : 1080 - 25};
+    var numMouseRows = 17;
+    var numMouseCols = 16;
     var mouseOrigin = {x: 0, y:0};
     var mouseSprite;
-    var originSprite;
     var cheeseSprites = [];
     var cheeses = [];
     var instructions;
@@ -97,6 +95,21 @@ BasicGame.Game = function (game) {
 
     var winCheck = function() {
 
+    }
+
+    // Clear the console in a new level so error messages stand out more
+    var clearConsole = function() {
+        console.API;
+
+        if (typeof console._commandLineAPI !== 'undefined') {
+            console.API = console._commandLineAPI; // Chrome
+        } else if (typeof console._inspectorCommandLineAPI !== 'undefined') {
+            console.API = console._inspectorCommandLineAPI; // Safari
+        } else if (typeof console.clear !== 'undefined') {
+            console.API = console;
+        }
+        console.API.clear();
+        return;
     }
 
     // Set up the direction to turn in.
@@ -180,33 +193,43 @@ BasicGame.Game = function (game) {
     };
 
     o.create = function() {
+        clearConsole();
+        // if (level === 1) {
+        //     mouseOrigin = {x:0, y:0};
+        //     cheeses[0] = {x:4, y:3};
+        // } else if (level === 2) {
+        //     mouseOrigin = {x:5, y:12};
+        //     cheeses[0] = {x:14, y:10};
+        // } else if (level === 3) {
+        //     mouseOrigin = {x: getRandomInt(0,numMouseCols), y: getRandomInt(0,numMouseRows)};
+        //     cheeses[0] = {x: getRandomInt(0,numMouseCols), y:getRandomInt(0,numMouseRows)};
+        // } else if (level === 4) {
+        //     mouseOrigin = {x: 15, y: 15};
+        //     cheeses[0] = {x: 15, y: 0};
+        // } else if (level === 5) {
+        //     mouseOrigin = {x: 0, y: 0};
+        // }
         if (level === 1) {
             mouseOrigin = {x:0, y:0};
-            cheeses[0] = {x:4, y:3};
+            cheeses[0] = {x:5, y:0};
         } else if (level === 2) {
-            mouseOrigin = {x:5, y:12};
-            cheeses[0] = {x:14, y:10};
+            mouseOrigin = {x:0, y:0};
+            cheeses[0] = {x:0, y:6};
         } else if (level === 3) {
-            mouseOrigin = {x: getRandomInt(0,33), y: getRandomInt(0,17)};
-            cheeses[0] = {x: getRandomInt(0,33), y:getRandomInt(0,17)};
+                mouseOrigin = {x:0, y:0};
+                cheeses[0] = {x:8, y:8};
         } else if (level === 4) {
-            mouseOrigin = {x: 32, y: 16};
-            cheeses[0] = {x: 32, y: 0};
+            mouseOrigin = {x: 0, y: 0};
+            cheeses[0] = {x: 4, y: 3};
         } else if (level === 5) {
-            mouseOrigin.y = getRandomInt(0,17);
-            mouseOrigin.x = getRandomInt(0,33);
+            mouseOrigin = {x: 0, y: 0};
+            cheeses[0] = {x: getRandomInt(0,numMouseCols), y:getRandomInt(0,numMouseRows)};
         }
-        // Make-your-own level (upload file)
+        // Make-your-own level?
 
         mouse = makeMouse(mouseOrigin.x, mouseOrigin.y, 0);
 
         this.add.sprite(0, 0, 'gameBackground');
-
-        // Add the origin picture.
-        originSprite = this.add.sprite(0, 0, 'origin');
-        originSprite.anchor.setTo(0.5,0.5);
-        originSprite.x = bottomLeft.x;
-        originSprite.y = bottomLeft.y;
 
         // Add the cheeses.
         for(var i = 0; i < cheeses.length; i++) {
@@ -217,17 +240,15 @@ BasicGame.Game = function (game) {
 
         // Add the axes.
         for (var i = 0; i < numMouseCols; i++) {
-            var colText = this.game.add.text(0, 0, "" + i, {align:'center', font:'Arial Black', fontSize:30, stroke:'#000000', strokeThickness: 6, fill: '#1B88FF'});
+            var colText = this.game.add.text(0, 0, "" + i, {align:'center', font:'Arial Black', fontSize:20, stroke:'#000000', strokeThickness: 4, fill: '#1B88FF'});
             colText.anchor.set(0.5);
-            colText.alpha = 0.5;
             colText.x = gameOrigin.x + i*TILESIZE;
-            colText.y = gameOrigin.y + TILESIZE/2;
+            colText.y = gameOrigin.y + TILESIZE/3;
         }
         for (var i = 0; i < numMouseRows; i++) {
-            var rowText = this.game.add.text(0, 0, "" + i, {align:'center', font:'Arial Black', fontSize:30, stroke:'#000000', strokeThickness: 6, fill: '#1B88FF'});
+            var rowText = this.game.add.text(0, 0, "" + i, {align:'center', font:'Arial Black', fontSize:20, stroke:'#000000', strokeThickness: 4, fill: '#1B88FF'});
             rowText.anchor.set(0.5);
-            rowText.alpha = 0.5;
-            rowText.x = gameOrigin.x - TILESIZE/2;
+            rowText.x = gameOrigin.x - TILESIZE/4;
             rowText.y = gameOrigin.y - i*TILESIZE + 1;
         }
         var axes = this.game.add.graphics(gameOrigin.x,gameOrigin.y);
@@ -253,7 +274,7 @@ BasicGame.Game = function (game) {
             pointSprite.anchor.setTo(0.5,0.5);
 
             // Text to show the coordinate of the point.
-            var pointText = this.game.add.text(0, 0, "( "+cheeses[i].x+", "+cheeses[i].y+")", {align:'center', font:'Arial Black', fontSize:30, stroke:'#000000', strokeThickness: 6, fill: '#1B88FF'});
+            var pointText = this.game.add.text(0, 0, "( "+cheeses[i].x+", "+cheeses[i].y+")", {align:'center', font:'Arial Black', fontSize:30, stroke:'#000000', strokeThickness: 6, fill: '#FF1B1B'});
             pointText.x = spriteCoord.x+5;
             pointText.y = spriteCoord.y-5;
         }
@@ -261,18 +282,20 @@ BasicGame.Game = function (game) {
         // Add the back button.
         this.backButton = this.add.button(0, 0, 'backButton', this.quitGame, this, 1, 0, 2);
 
-        //XXX check that my-code exists somewhere?
-
         // Run the instruction code.
-//        myCode();
-        eval(BasicGame.editor.getValue());
+        try {
+            eval(BasicGame.editor.getValue());
+        } catch(e) {
+            console.log("ERROR: " + e.message);
+            instruction = {do: 'turn', value: 0, done: true}; // A dummy instruction
 
+        }
         // Make the instructions useable
         instructions = mouse.getInstructions();
         if (instructions.length === 0) {
             console.log("ERROR: Your code isn't giving the mouse any instructions!");
             this.state.start('MainMenu');
-            instruction = {do: 'turn', value: 0, done: true}; // A dummy instruction for the update method
+            instruction = {do: 'turn', value: 0, done: true}; // A dummy instruction
         } else {
             instructions.forEach(function(instr) {
                 if (instr.do === 'turn') {

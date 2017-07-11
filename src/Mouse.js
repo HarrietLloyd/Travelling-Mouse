@@ -83,7 +83,7 @@ var makeMouse = function(Xposition, Yposition, heading) {
             console.log(dist);
             dist = 0;
         }
-        
+
         // Add the move instruction.
         instructions.push({do:'move', value:dist, done:false});
 
@@ -99,7 +99,7 @@ var makeMouse = function(Xposition, Yposition, heading) {
         Y: getY,
         direction: getDirection,
         faceDirection: setDirection,
-        moveDistance: setDistance,
+        moveForward: setDistance,
         getInstructions: getInstructions
     };
 };
